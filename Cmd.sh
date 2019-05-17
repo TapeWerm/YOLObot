@@ -53,7 +53,6 @@ if [ "$chan" = "$Nick" ]; then
 	# case statements are only case sensitive if parameters are passed by script
 elif echo "$user" | grep -Evq "Bot\b|[A-Z][A-Z]bot\b|[_-]bot\b|ExampleSpambot"; then
 # YOLObot doesn't take orders from other bots
-# Except rc (Rocket.Chat bridge), and undercover bots using markov chain
 # WermBot ACRONYMbot werm_bot werm-bot
 # Bots with hard-to-parse nicks that prefix a trigger
 # Names can end in bot and people can be voiced in #bots too
