@@ -115,13 +115,13 @@ tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
 		elif [ "$(echo "$irc" | cut -d ' ' -f 2)" = 319 ]; then
 		# Check if user joined common channel after WHOIS
 		# After WHOIS IRC says :$host.cat.pdx.edu 319 $nick $user :$chans
-			joined="$(echo "$irc" | cut -d ':' -f 3 | tr -d '+' | tr -d '@') "
+			joined="$(echo "$irc" | cut -d : -f 3 | tr -d +@) "
 			# Closing space to grep "# " instead of #
 			# #chan contains # but not "# "
 			# User mode might precede chan
 			# @#chan
 			# Remove + and @ from 3rd string divided by : and add space at the end
-			chans="$(cat "$join" | cut -d ' ' -f 2 | sed 's/,/ |/g') "
+			chans="$(echo "$join" | cut -d ' ' -f 2 | sed 's/,/ |/g') "
 			# grep $chan1 or $chan2 ...
 			# Replace , with ' |' from 2nd string divided by space and add space at the end
 
