@@ -63,7 +63,7 @@ elif echo "$user" | grep -Evq "Bot\b|[A-Z][A-Z]bot\b|[_-]bot\b|ExampleSpambot"; 
 		# Without -s the first string is counted if there isn't a 2nd
 		;;
 	$(echo -e "\001action"))
-	# /me pets WakeBot
+	# /me pets YOLObot
 		action $(echo "$msg" | cut -d ' ' -f 2-3 -s | tr [:upper:] [:lower:])
 		;;
 	esac
