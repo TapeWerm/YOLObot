@@ -13,6 +13,7 @@ mkdir -p ~/.YOLObot
 # Make directory and parents quietly
 buffer=~/.YOLObot/${nick}Buffer
 rm "$buffer"
+# Kill all doppelgangers
 mkfifo "$buffer"
 join_file=~/.YOLObot/${nick}Join.txt
 join=$(cat "$join_file" | cut -d $'\n' -f 1)
