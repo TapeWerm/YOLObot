@@ -1,7 +1,7 @@
 # Description
-IRC bot framework example, says YOLO and not much else, but only to people in a same channel as it
+IRC bot framework example, says YOLO and not much else, but PMs only to people in a same channel as it
 
-The YOLO IRC bot framework checks if PMs are from a user in a same channel as the bot, features timeouts, multi-line message truncation, send as bot, test instances, /me support, uses s_client, and is a verifable member of the mafia written in bash for better and worse.
+The YOLO IRC bot framework only PMs only to people in a same channel as it, features timeouts, multi-line message truncation, send as bot, test instances, /me support, uses s_client, and is a verifable member of the mafia written in bash for better and worse.
 # Notes
 How to dump tmux scrollback for debugging:
 ```bash
