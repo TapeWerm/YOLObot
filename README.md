@@ -1,0 +1,48 @@
+# Description
+IRC bot framework example, says YOLO and not much else
+# Notes
+How to dump tmux scrollback for debugging:
+```bash
+tmux capture-pane -pt $sessionname -S - | less
+# $sessionname is YOLObot
+```
+How to speak through YOLObot:
+```bash
+echo "PRIVMSG #chan :Test" >> ~/.YOLObot/YOLObotBuffer
+```
+Only replies to messages from users in channels it's in. If it's only in keyed channels outsiders can't use it, if it's in no channels no one can.
+# Setup
+Open Terminal:
+```bash
+sudo apt install git tmux
+git clone https://github.com/TapeWerm/YOLObot.git
+cd YOLObot
+```
+Copy and paste this block:
+```bash
+mkdir ~/YOLObotProd
+# Do not run prod in a git repo you're working in
+for file in `ls *.sh`; do cp $file ~/YOLObotProd/; done
+mkdir ~/.YOLObot
+```
+Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
+```
+JOIN #chan,#chan $key,$key
+irc.domain.tld:$port
+```
+List channels with no password last. Enter `crontab -e` and add this to your crontab:
+```
+* * * * * ~/YOLObotProd/Cron.sh > /dev/null 2>&1
+# &> does not work in crontab cause it uses sh, not bash
+```
+# Files
+## Bot.sh
+IRC parser called by Cron.sh. Updates require restart to take effect. Test with a different nick ($1). Based on kekbot by dom, Aatrox, and Hunner.
+## Cmd.sh
+Commands called by Bot.sh.
+## Cron.sh
+Script called by crontab to avoid duplicate sessions. Session outlives bot though (floods). Test with a different nick ($1).
+## ~/.YOLObot/${nick}Buffer
+Named pipe made by Bot.sh for IRC I/O. Reading with tail -f blocks output to IRC.
+## ~/.YOLObot/${nick}Join.txt
+List of channels and passwords to join them read by Bot.sh.
