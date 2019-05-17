@@ -1,7 +1,7 @@
 # Description
 IRC bot framework example, says YOLO and not much else, but PMs only to people in a same channel as it
 
-The YOLO IRC bot framework only PMs only to people in a same channel as it, features timeouts, multi-line message truncation, send as bot, test instances, /me support, uses s_client, and is a verifable member of the mafia written in bash for better and worse.
+The YOLO IRC bot framework only PMs only to people in a same channel as it, features timeouts, multi-line message truncation, send as bot, test instances, /me support, uses s_client, and is a verifable member of the mafia written in bash for better and worse. Heavily forked from a basic IRC bot framework taught to new IT support, it grew to power an internal production-grade bot after much learning by trial and error. Permission was granted to upload the framework under MIT, and after years gathering dust, I had to add timeouts to fix a holdout from the Rocket.Chat migration based on the framework. And if my last grievance is fixed, I may as well strip it back down to its memebot roots and finally open-source its cool channel checking feature. Can't have engineering students using our work bots through private messages. Yay tech debt.
 # Notes
 How to dump tmux scrollback for debugging:
 ```bash
