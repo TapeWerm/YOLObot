@@ -39,6 +39,8 @@ pat() {
 	esac
 }
 
+msg=$(echo "$msg" | tr -d '*')
+# Filter filename expansion
 if echo "$msg" | grep -Eq '^-| -'; then
 # If $msg contains a flag
 	msg=$(echo "$msg" | sed s/^-// | sed s/\ -/\ /)
