@@ -39,7 +39,7 @@ pat() {
 	esac
 }
 
-if echo "$msg" | grep -Eq "^-| -"; then
+if echo "$msg" | grep -Eq '^-| -'; then
 # If $msg contains a flag
 	msg=$(echo "$msg" | sed s/^-// | sed s/\ -/\ /)
 	# Remove leading - from flags
@@ -48,7 +48,7 @@ fi
 if [ "$chan" = "$Nick" ]; then
 	reply `echo $msg | tr [:upper:] [:lower:]`
 	# No trigger if you're messaging
-	# case statements are only case sensitive if parameters are passed by script
+	# Case statements are only case sensitive if parameters are passed by script
 elif echo "$user" | grep -Evq "Bot\b|[A-Z][A-Z]bot\b|[_-]bot\b|ExampleSpambot"; then
 # YOLObot doesn't take orders from other bots
 # WermBot ACRONYMbot werm_bot werm-bot
