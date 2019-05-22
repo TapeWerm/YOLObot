@@ -45,7 +45,7 @@ IRC parser called by Cron.sh. Updates require restart to take effect. Test with 
 ## Cmd.sh
 Commands called by Bot.sh.
 ## Cron.sh
-Script called by crontab to avoid duplicate sessions. Session outlives bot though (floods). Test with a different nick ($1).
+Script called by crontab to avoid duplicate sessions. Test with a different nick ($1).
 ## ~/.YOLObot/${nick}Buffer
 Named pipe made by Bot.sh for IRC I/O. Reading with tail -f blocks output to IRC.
 ## ~/.YOLObot/${nick}Join.txt

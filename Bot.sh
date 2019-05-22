@@ -2,25 +2,9 @@
 
 dir=$(dirname "$0")
 # $0 is the path
+fqdn=$(getent ahostsv4 "$HOSTNAME" | head -n 1 | cut -c 24-)
+# getent says $ip             STREAM $fqdn
 max_lines=5
-if [ -z "$1" ]; then
-# If $1 doesn't exist
-	nick=YOLObot
-else
-	nick=$1
-fi
-mkdir -p ~/.YOLObot
-# Make directory and parents quietly
-buffer=~/.YOLObot/${nick}Buffer
-rm "$buffer"
-# Kill all doppelgangers
-mkfifo "$buffer"
-join_file=~/.YOLObot/${nick}Join.txt
-join=$(cat "$join_file" | cut -d $'\n' -f 1)
-server=$(cat "$join_file" | cut -d $'\n' -f 2 -s)
-ping_time=/dev/shm/$nick
-# Forked processes cannot share variables
-echo 0 > "$ping_time"
 
 send() {
 	echo "-> $*"
@@ -67,13 +51,30 @@ ping_timeout() {
 	# exit does not exit script when forked
 }
 
+if [ -z "$1" ]; then
+# If $1 doesn't exist
+	nick=YOLObot
+else
+	nick=$1
+fi
+mkdir -p ~/.YOLObot
+# Make directory and parents quietly
+buffer=~/.YOLObot/${nick}Buffer
+rm "$buffer"
+# Kill all doppelgangers
+mkfifo "$buffer"
+join_file=~/.YOLObot/${nick}Join.txt
+join=$(cat "$join_file" | cut -d $'\n' -f 1)
+server=$(cat "$join_file" | cut -d $'\n' -f 2 -s)
+ping_time=/dev/shm/$nick
+# Forked processes cannot share variables
+echo 0 > "$ping_time"
+
 ping_timeout &
 
 tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
 # Last 10 lines of $buffer as IRC appends to it
 	if [ -z "$started" ]; then
-		fqdn=$(getent ahostsv4 "$HOSTNAME" | head -n 1 | cut -c 24-)
-		# getent says $ip             STREAM $fqdn
 		send "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
 		# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
 		# $USER = `whoami` and is not set in cron
@@ -85,11 +86,11 @@ tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
 	read -r irc
 	if [ -n "$irc" ]; then
 	# If disconnected YOLObot reads an empty string
+		echo 0 > "$ping_time"
+		# Reset timeout
 		echo "<- $irc"
 		if [ "$(echo "$irc" | cut -d ' ' -f 1)" = PING ]; then
 			send PONG
-			echo 0 > "$ping_time"
-			# Reset timeout
 		elif [ "$(echo "$irc" | cut -d ' ' -f 1)" = ERROR ]; then
 			if echo "$irc" | grep -q 'Closing Link'; then
 				exit
