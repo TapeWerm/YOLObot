@@ -26,8 +26,7 @@ reply() {
 		echo "$output" | while read -r line; do
 		# Echo lines separately
 			send "PRIVMSG $1 :$line"
-			# $1 is the destination
-			# If $chan = $nick send to $user instead
+			# $1 is the destination channel
 		done
 	fi
 	unset user
@@ -41,7 +40,8 @@ reject() {
 }
 
 ping_timeout() {
-	while [ "$(cat "$ping_time")" -lt 260 ]; do
+	while [ "$(cat "$ping_time")" -lt 900 ]; do
+	# 9 minute timeout
 	# irc.cat.pdx.edu ping timeout is 4m20s
 		sleep 1
 		echo $(($(cat "$ping_time") + 1)) > "$ping_time"
@@ -60,8 +60,9 @@ fi
 mkdir -p ~/.YOLObot
 # Make directory and parents quietly
 buffer=~/.YOLObot/${nick}Buffer
-rm "$buffer"
+rm -f "$buffer"
 # Kill all doppelgangers
+# Duplicate bots exit if $buffer is removed
 mkfifo "$buffer"
 join_file=~/.YOLObot/${nick}Join.txt
 join=$(cat "$join_file" | cut -d $'\n' -f 1)
@@ -110,6 +111,7 @@ tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
 			msg=$(echo "$irc" | cut -d ' ' -f 4- | tr -d '\r\n' | cut -c 2-)
 			# Remove new line from 2nd character onwards from 4th string onwards divided by space
 			if [ "$chan" = "$nick" ]; then
+			# $chan = $nick in PMs
 				send "WHOIS $user"
 			else
 				reply "$chan"
