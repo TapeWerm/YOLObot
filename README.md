@@ -7,7 +7,7 @@ Heavily forked from a basic IRC bot framework taught to new IT support, it grew 
 # Notes
 How to dump tmux scrollback for debugging:
 ```bash
-tmux capture-pane -pt $sessionname -S - | less
+tmux capture-pane -pt "$sessionname" -S - | less
 # $sessionname is YOLObot
 ```
 How to speak through YOLObot:
@@ -26,7 +26,7 @@ Copy and paste this block:
 ```bash
 mkdir ~/YOLObotProd
 # Do not run prod in a git repo you're working in
-for file in `ls *.sh`; do cp $file ~/YOLObotProd/; done
+for file in $(ls *.sh); do cp "$file" ~/YOLObotProd/; done
 mkdir ~/.YOLObot
 ```
 Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
