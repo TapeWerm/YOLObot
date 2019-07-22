@@ -64,10 +64,13 @@ rm -f "$buffer"
 # Kill all doppelgangers
 # Duplicate bots exit if $buffer is removed
 mkfifo "$buffer"
+
 join_file=~/.YOLObot/${nick}Join.txt
 join=$(cat "$join_file" | cut -d $'\n' -f 1)
 server=$(cat "$join_file" | cut -d $'\n' -f 2 -s)
-ping_time=/dev/shm/$nick
+
+mkdir -p /dev/shm/YOLObot
+ping_time=/dev/shm/YOLObot/$nick
 # Forked processes cannot share variables
 echo 0 > "$ping_time"
 
