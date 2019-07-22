@@ -1,0 +1,20 @@
+[Unit]
+After=network.target
+# Implicit needs are explicitly needed to survive shutdown till stop finishes
+Description=IRC bot framework example
+
+[Service]
+ExecStart=/usr/bin/tmux -S /tmp/tmux-yolobot/%i new -ds %i ./Bot.sh %i
+# Makes session %i on socket /tmp/tmux-yolobot/%i in background
+# which says script path
+ExecStartPre=/bin/mkdir -p /tmp/tmux-yolobot
+ExecStop=/usr/bin/tmux -S /tmp/tmux-yolobot/%i send-keys -t %i:0.0 Ctrl-C
+# Press Ctrl-C in the first pane of the first window of session %i on socket /tmp/tmux-yolobot/%i
+ExecStopPre=/bin/echo QUIT service stop >> /opt/YOLObot/.YOLObot/%iBuffer
+Restart=always
+Type=forking
+User=yolobot
+WorkingDirectory=/opt/YOLObot
+
+[Install]
+WantedBy=multi-user.target
