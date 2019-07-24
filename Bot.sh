@@ -41,11 +41,11 @@ reject() {
 
 ping_timeout() {
 	while true; do
-		local thyme=$(date +%s)
+		thyme=$(date +%s)
 		# Seconds since epoch
-		local mthyme=$(stat -c %Y "$ping_time")
+		mthyme=$(stat -c %Y "$ping_time")
 		# File modification time in seconds since epoch
-		local diff=$((thyme - mthyme))
+		diff=$((thyme - mthyme))
 		if [ "$diff" -gt 900 ]; then
 		# 15 minute timeout
 		# irc.cat.pdx.edu ping timeout is 4m20s
