@@ -46,7 +46,7 @@ ping_timeout() {
 		local mthyme=$(stat -c %Y "$ping_time")
 		# File modification time in seconds since epoch
 		local diff=$((thyme - mthyme))
-		if [ "$diff" -lt 900 ]; then
+		if [ "$diff" -gt 900 ]; then
 		# 15 minute timeout
 		# irc.cat.pdx.edu ping timeout is 4m20s
 			kill $$
