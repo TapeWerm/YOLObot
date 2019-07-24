@@ -40,22 +40,20 @@ reject() {
 }
 
 ping_timeout() {
-	while true; do
+	diff=0
+	while [ "$diff" -lt 900 ]; do
+	# 15 minute timeout
+	# irc.cat.pdx.edu ping timeout is 4m20s
+		sleep 1
 		thyme=$(date +%s)
 		# Seconds since epoch
 		mthyme=$(stat -c %Y "$ping_time")
 		# File modification time in seconds since epoch
 		diff=$((thyme - mthyme))
-		if [ "$diff" -gt 900 ]; then
-		# 15 minute timeout
-		# irc.cat.pdx.edu ping timeout is 4m20s
-			kill $$
-			# Kill script process
-			# exit does not exit script when forked
-			exit
-		fi
-		sleep 1
 	done
+	kill $$
+	# Kill script process
+	# exit does not exit script when forked
 }
 
 if [ -z "$1" ]; then
