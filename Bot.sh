@@ -40,15 +40,22 @@ reject() {
 }
 
 ping_timeout() {
-	while [ "$(cat "$ping_time")" -lt 900 ]; do
-	# 9 minute timeout
-	# irc.cat.pdx.edu ping timeout is 4m20s
+	while true; do
+		local thyme=$(date +%s)
+		# Seconds since epoch
+		local mthyme=$(stat -c %Y "$ping_time")
+		# File modification time in seconds since epoch
+		local diff=$((thyme - mthyme))
+		if [ "$diff" -lt 900 ]; then
+		# 15 minute timeout
+		# irc.cat.pdx.edu ping timeout is 4m20s
+			kill $$
+			# Kill script process
+			# exit does not exit script when forked
+			exit
+		fi
 		sleep 1
-		echo $(($(cat "$ping_time") + 1)) > "$ping_time"
 	done
-	kill $$
-	# Kill script process
-	# exit does not exit script when forked
 }
 
 if [ -z "$1" ]; then
@@ -72,7 +79,7 @@ server=$(cat "$join_file" | cut -d $'\n' -f 2 -s)
 mkdir -p /dev/shm/YOLObot
 ping_time=/dev/shm/YOLObot/$nick
 # Forked processes cannot share variables
-echo 0 > "$ping_time"
+touch "$ping_time"
 
 ping_timeout &
 
@@ -90,7 +97,7 @@ tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
 	read -r irc
 	if [ -n "$irc" ]; then
 	# If disconnected YOLObot reads an empty string
-		echo 0 > "$ping_time"
+		touch "$ping_time"
 		# Reset timeout
 		echo "<- $irc"
 		if [ "$(echo "$irc" | cut -d ' ' -f 1)" = PING ]; then
