@@ -10,11 +10,9 @@ ExecStart=/usr/bin/tmux -S /tmp/tmux-yolobot/%i new -ds %i ./Bot.sh %i
 ExecStartPre=/bin/mkdir -p /tmp/tmux-yolobot
 ExecStop=/usr/bin/tmux -S /tmp/tmux-yolobot/%i send-keys -t %i:0.0 Ctrl-C
 # Press Ctrl-C in the first pane of the first window of session %i on socket /tmp/tmux-yolobot/%i
-ExecStopPre=/bin/echo QUIT service stop >> /opt/YOLObot/.YOLObot/%iBuffer
 Restart=always
 Type=forking
-User=yolobot
-WorkingDirectory=/opt/YOLObot
+WorkingDirectory=%h/YOLObotProd
 
 [Install]
 WantedBy=multi-user.target

@@ -22,7 +22,6 @@ sudo apt install git tmux
 git clone https://github.com/TapeWerm/YOLObot.git
 cd YOLObot
 ```
-# crontab Setup
 Copy and paste this block:
 ```bash
 mkdir ~/YOLObotProd
@@ -35,7 +34,9 @@ Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-
 JOIN #chan,#chan $key,$key
 irc.domain.tld:$port
 ```
-List channels with no password last. Enter `crontab -e` and add this to your crontab:
+List channels with no password last.
+# crontab Setup
+Enter `crontab -e` and add this to your crontab:
 ```
 * * * * * ~/YOLObotProd/Cron.sh > /dev/null 2>&1
 # &> does not work in crontab cause it uses sh, not bash
@@ -43,20 +44,10 @@ List channels with no password last. Enter `crontab -e` and add this to your cro
 # systemd Setup
 Copy and paste this block:
 ```bash
-sudo adduser --home /opt/YOLObot --system yolobot
-for file in $(ls *.sh); do sudo cp "$file" ~yolobot/; done
-sudo mkdir ~yolobot/.YOLObot
-```
-Enter `nano ~yolobot/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
-```
-JOIN #chan,#chan $key,$key
-irc.domain.tld:$port
-```
-Copy and paste this block:
-```bash
-sudo chown -R yolobot:nogroup $(find ~yolobot -maxdepth 1 | grep -v ^~yolobot$)
-for file in $(ls systemd); do sudo cp "systemd/$file" /etc/systemd/system/; done
-sudo systemctl enable yolobot@YOLObot.service --now
+mkdir -p ~/.config/systemd/user
+for file in $(ls systemd); do sudo cp "systemd/$file" ~/.config/systemd/user/; done
+systemctl --user enable yolobot@YOLObot.service --now
+loginctl enable-linger "$USER"
 ```
 # Files
 ## Bot.sh
