@@ -2,6 +2,7 @@
 After=network.target
 # Implicit needs are explicitly needed to survive shutdown till stop finishes
 Description=IRC bot framework example
+Requires=network.target
 
 [Service]
 ExecStart=/usr/bin/tmux -S /tmp/tmux-yolobot/%i new -ds %i ./Bot.sh %i
