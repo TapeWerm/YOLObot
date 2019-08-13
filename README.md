@@ -46,7 +46,7 @@ Copy and paste this block:
 ```bash
 mkdir -p ~/.config/systemd/user
 for file in $(ls systemd); do sudo cp "systemd/$file" ~/.config/systemd/user/; done
-systemctl --user enable yolobot@YOLObot.service --now
+systemctl --user enable yolobot.service --now
 loginctl enable-linger "$USER"
 ```
 # Files

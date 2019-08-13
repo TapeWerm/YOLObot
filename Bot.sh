@@ -5,6 +5,9 @@ dir=$(dirname "$0")
 fqdn=$(getent ahostsv4 "$HOSTNAME" | head -n 1 | cut -c 24-)
 # getent says $ip             STREAM $fqdn
 max_lines=5
+uid=$(id -u "$(whoami)")
+# $USER = `whoami` and is not set in cron
+ram=/dev/shm/$uid
 
 send() {
 	echo "-> $*"
@@ -71,11 +74,11 @@ rm -f "$buffer"
 mkfifo "$buffer"
 
 join_file=~/.YOLObot/${nick}Join.txt
-join=$(cat "$join_file" | cut -d $'\n' -f 1)
-server=$(cat "$join_file" | cut -d $'\n' -f 2 -s)
+join=$(cut -d $'\n' -f 1 < "$join_file")
+server=$(cut -d $'\n' -f 2 -s < "$join_file")
 
-mkdir -p /dev/shm/YOLObot
-ping_time=/dev/shm/YOLObot/$nick
+mkdir -p "$ram/YOLObot"
+ping_time=$ram/YOLObot/$nick
 # Forked processes cannot share variables
 touch "$ping_time"
 
@@ -86,7 +89,6 @@ tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
 	if [ -z "$started" ]; then
 		send "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
 		# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
-		# $USER = `whoami` and is not set in cron
 		send "NICK $nick"
 		send "$join"
 		started=true
