@@ -57,6 +57,7 @@ ping_timeout() {
 	kill $$
 	# Kill script process
 	# exit does not exit script when forked
+	exit
 }
 
 if [ -z "$1" ]; then
