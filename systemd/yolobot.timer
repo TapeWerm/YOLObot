@@ -1,0 +1,9 @@
+[Unit]
+Description=Start YOLObot hourly
+# If restarts exceed due to service outage try again in an hour
+
+[Timer]
+OnCalendar=hourly
+
+[Install]
+WantedBy=timers.target

@@ -47,6 +47,7 @@ Copy and paste this block:
 mkdir -p ~/.config/systemd/user
 for file in $(ls systemd); do cp "systemd/$file" ~/.config/systemd/user/; done
 systemctl --user enable yolobot.service --now
+systemctl --user enable yolobot.timer --now
 loginctl enable-linger "$USER"
 ```
 # Files
