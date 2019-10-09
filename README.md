@@ -7,8 +7,8 @@ Heavily forked from a basic IRC bot framework taught to new IT support, it grew 
 # Notes
 How to dump tmux scrollback for debugging:
 ```bash
-tmux capture-pane -pt "$sessionname" -S - | less
 # $sessionname is YOLObot
+tmux capture-pane -pt "$sessionname" -S - | less
 ```
 How to speak through YOLObot:
 ```bash
@@ -24,8 +24,8 @@ cd YOLObot
 ```
 Copy and paste this block:
 ```bash
-mkdir ~/YOLObotProd
 # Do not run prod in a git repo you're working in
+mkdir ~/YOLObotProd
 for file in $(ls *.sh); do cp "$file" ~/YOLObotProd/; done
 mkdir ~/.YOLObot
 ```
