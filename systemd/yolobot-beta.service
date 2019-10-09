@@ -1,17 +1,16 @@
 [Unit]
-Description=IRC bot framework example (beta)
+Description=YOLObotBeta
 
 [Service]
-ExecStart=/usr/bin/tmux -S /tmp/tmux-%U/YOLObotBeta new -ds YOLObotBeta ./Bot.sh YOLObotBeta
 # Makes session YOLObotBeta on socket /tmp/tmux-%U/YOLObotBeta in background
 # which says script path
+ExecStart=/usr/bin/tmux -S /tmp/tmux-%U/YOLObotBeta new -ds YOLObotBeta ./Bot.sh YOLObotBeta
 ExecStartPre=/bin/mkdir -p /tmp/tmux-yolobot
-ExecStop=/usr/bin/tmux -S /tmp/tmux-yolobot/YOLObotBeta send-keys -t YOLObotBeta:0.0 Ctrl-C
-# Press Ctrl-C in the first pane of the first window of session YOLObotBeta on socket /tmp/tmux-yolobot/YOLObotBeta
+ExecStop=/usr/bin/tmux -S /tmp/tmux-yolobot/YOLObotBeta kill-session -t YOLObotBeta
 Restart=always
 Type=forking
-WorkingDirectory=%h/yolobot
 # Test in git dir instead of prod
+WorkingDirectory=%h/yolobot
 
 [Install]
 WantedBy=multi-user.target

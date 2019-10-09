@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-dir=$(dirname "$0")
 # $0 is the path
+dir=$(dirname "$0")
 if [ -z "$1" ]; then
 	name=YOLObot
 else
@@ -9,6 +9,6 @@ else
 fi
 
 if ! tmux ls 2>&1 | grep -q "^$name:"; then
-	tmux new -ds "$name" "$dir/Bot.sh" "$name"
 	# Makes session $name in background
+	tmux new -ds "$name" "$dir/Bot.sh" "$name"
 fi
