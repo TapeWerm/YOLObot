@@ -82,6 +82,7 @@ mkdir -p "$ram/YOLObot"
 # Forked processes cannot share variables
 ping_time=$ram/YOLObot/$nick
 touch "$ping_time"
+trap 'rm -r "$ping_time"' EXIT
 
 ping_timeout &
 
