@@ -36,8 +36,8 @@ irc.domain.tld:$port
 ```
 List channels with no password last.
 
-Do not use both crontab and systemd.
-## crontab Setup
+Do not use both cron and systemd.
+## cron Setup
 Enter `crontab -e` and add this to your crontab:
 ```
 * * * * * ~/YOLObotProd/Cron.sh > /dev/null 2>&1
