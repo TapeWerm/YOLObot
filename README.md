@@ -15,7 +15,7 @@ How to speak through YOLObot:
 echo "PRIVMSG #chan :Test" >> ~/.YOLObot/YOLObotBuffer
 ```
 Only replies to messages from users in channels it's in. If it's only in keyed channels outsiders can't use it, if it's in no channels no one can.
-# Common Setup
+# Setup
 Open Terminal:
 ```bash
 sudo apt install git tmux
@@ -35,13 +35,15 @@ JOIN #chan,#chan $key,$key
 irc.domain.tld:$port
 ```
 List channels with no password last.
-# crontab Setup
+
+Do not use both crontab and systemd.
+## crontab Setup
 Enter `crontab -e` and add this to your crontab:
 ```
 * * * * * ~/YOLObotProd/Cron.sh > /dev/null 2>&1
 # &> does not work in crontab cause it uses sh, not bash
 ```
-# systemd Setup
+## systemd Setup
 Copy and paste this block:
 ```bash
 mkdir -p ~/.config/systemd/user
