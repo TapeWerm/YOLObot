@@ -8,6 +8,7 @@ max_lines=5
 # $USER = `whoami` and is not set in cron
 uid=$(id -u "$(whoami)")
 ram=/dev/shm/$uid
+ram_dir=$ram/YOLObot
 
 send() {
 	# Avoid filename expansion
@@ -78,11 +79,11 @@ join_file=~/.YOLObot/${nick}Join.txt
 join=$(cut -d $'\n' -f 1 < "$join_file")
 server=$(cut -d $'\n' -f 2 -s < "$join_file")
 
-mkdir -p "$ram/YOLObot"
+mkdir -p "$ram_dir"
 # Forked processes cannot share variables
-ping_time=$ram/YOLObot/$nick
+ping_time=$ram_dir/$nick
 touch "$ping_time"
-trap 'rm -r "$ping_time"' EXIT
+trap 'rm -r "$ram_dir"; rmdir --ignore-fail-on-non-empty "$ram"' EXIT
 
 ping_timeout &
 
