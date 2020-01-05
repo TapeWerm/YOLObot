@@ -44,13 +44,13 @@ irc.domain.tld:$port
 List channels with no password last.
 
 Do not use both cron and systemd.
-## cron Setup
+## cron setup
 Enter `crontab -e` and add this to your crontab:
 ```
 * * * * * ~/YOLObotProd/Cron.sh > /dev/null 2>&1
 # &> does not work in crontab cause it uses sh, not bash
 ```
-## systemd Setup
+## systemd setup
 Copy and paste this block:
 ```bash
 mkdir -p ~/.config/systemd/user
