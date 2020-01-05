@@ -1,5 +1,7 @@
 [Unit]
 Description=YOLObotBeta
+# systemd user services will start on any host by default, making duplicate bots
+ConditionHost=hostname.domain.tld
 
 [Service]
 # Makes session YOLObotBeta on socket /tmp/tmux-%U/YOLObotBeta in background

@@ -4,12 +4,19 @@ IRC bot framework example, says YOLO and not much else, but PMs only to people i
 The YOLO IRC bot framework PMs only to people in a same channel as it, features timeouts, multi-line message truncation, send as bot, test instances, /me support, uses s_client, and is a verifable member of the mafia written in bash for better and worse.
 
 Heavily forked from a basic IRC bot framework taught to new IT support, it grew to power an internal bot in production after much learning by trial and error. Permission was granted to upload the framework under MIT, and after years gathering dust, I had to add timeouts to fix a holdout from the Rocket.Chat migration based on the framework. And if my last grievance is fixed, I may as well strip it back down to its memebot roots and finally open-source its cool channel checking feature. Can't have engineering students using our work bots through private messages. Yay tech debt.
-# Notes
+## cron notes
 How to dump tmux scrollback for debugging:
 ```bash
 # $sessionname is YOLObot
 tmux capture-pane -pt "$sessionname" -S - | less
 ```
+## systemd notes
+How to dump tmux scrollback for debugging:
+```bash
+# $sessionname is YOLObot
+tmux -S "/tmp/tmux-$UID/$sessionname" capture-pane -pt "$sessionname" -S - | less
+```
+## IRC notes
 How to speak through YOLObot:
 ```bash
 echo "PRIVMSG #chan :Test" >> ~/.YOLObot/YOLObotBuffer
@@ -48,9 +55,12 @@ Copy and paste this block:
 ```bash
 mkdir -p ~/.config/systemd/user
 for file in $(ls systemd); do cp "systemd/$file" ~/.config/systemd/user/; done
-systemctl --user enable yolobot.service --now
-systemctl --user enable yolobot.timer --now
 loginctl enable-linger "$USER"
+```
+Replace $hostname with the host YOLObot will run on.
+```bash
+for file in $(ls systemd/*.service); do sed -i s/^ConditionHost=.*/ConditionHost=$hostname/ ~/.config/systemd/user/"$(basename "$file")"; done
+systemctl --user enable yolobot.service yolobot.timer --now
 ```
 # Files
 ## Bot.sh
