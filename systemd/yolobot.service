@@ -6,7 +6,7 @@ ConditionHost=hostname.domain.tld
 [Service]
 # Makes session YOLObot on socket /tmp/tmux-%U/YOLObot in background
 # which says script path
-ExecStart=/usr/bin/tmux -S /tmp/tmux-%U/YOLObot new -ds YOLObot ./Bot.sh YOLObot
+ExecStart=/usr/bin/tmux -S /tmp/tmux-%U/YOLObot new -ds YOLObot ./Bot.sh
 ExecStartPre=/bin/mkdir -p /tmp/tmux-yolobot
 ExecStop=/usr/bin/tmux -S /tmp/tmux-yolobot/YOLObot kill-session -t YOLObot
 Restart=always
