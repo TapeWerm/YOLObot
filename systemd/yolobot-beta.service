@@ -7,8 +7,8 @@ ConditionHost=hostname.domain.tld
 # Makes session YOLObotBeta on socket /tmp/tmux-%U/YOLObotBeta in background
 # which says script path
 ExecStart=/usr/bin/tmux -S /tmp/tmux-%U/YOLObotBeta new -ds YOLObotBeta ./Bot.sh YOLObotBeta
-ExecStartPre=/bin/mkdir -p /tmp/tmux-yolobot
-ExecStop=/usr/bin/tmux -S /tmp/tmux-yolobot/YOLObotBeta kill-session -t YOLObotBeta
+ExecStartPre=/bin/mkdir -p /tmp/tmux-%U
+ExecStop=/usr/bin/tmux -S /tmp/tmux-%U/YOLObotBeta kill-session -t YOLObotBeta
 Restart=always
 Type=forking
 # Test in git dir instead of prod
