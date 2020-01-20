@@ -64,7 +64,7 @@ systemctl --user enable yolobot.service yolobot.timer --now
 ```
 # Files
 ## Bot.sh
-IRC parser called by Cron.sh. Updates require restart to take effect. Test with a different nick ($1). Based on kekbot by dom, Aatrox, and Hunner.
+IRC parser called by Cron.sh. Updates require restart to take effect. Test with a different nick ($1).
 ## Cmd.sh
 Commands called by Bot.sh.
 ## Cron.sh

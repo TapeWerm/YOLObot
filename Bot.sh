@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Based on kekbot by dom, Aatrox, and Hunner.
 
 # $0 is the path
 dir=$(dirname "$0")
