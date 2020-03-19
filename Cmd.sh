@@ -39,13 +39,8 @@ pat() {
 	esac
 }
 
-# Filter filename expansion
-msg=$(echo "$msg" | tr -d '*')
-# If $msg contains a flag
-if echo "$msg" | grep -Eq '^-| -'; then
-	# Remove leading - from flags
-	msg=$(echo "$msg" | sed s/^-// | sed s/\ -/\ /)
-fi
+# Remove leading - from flags
+msg=$(echo "$msg" | sed s/^-// | sed s/\ -/\ /)
 
 if [ "$chan" = "$Nick" ]; then
 	# No trigger if you're messaging
