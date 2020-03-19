@@ -40,7 +40,7 @@ pat() {
 }
 
 # Remove leading - from flags
-msg=$(echo "$msg" | sed s/^-// | sed s/\ -/\ /)
+msg=$(echo "$msg" | sed -E s/^--\?// | sed -E s/\ --\?/\ /)
 
 if [ "$chan" = "$Nick" ]; then
 	# No trigger if you're messaging
