@@ -4,14 +4,10 @@ Description=YOLObotBeta
 ConditionHost=hostname.domain.tld
 
 [Service]
-# Makes session YOLObotBeta on socket /tmp/tmux-%U/YOLObotBeta in background
-# which says script path
-ExecStart=/usr/bin/tmux -S /tmp/tmux-%U/YOLObotBeta new -ds YOLObotBeta ./Bot.sh YOLObotBeta
-ExecStartPre=/bin/mkdir -p /tmp/tmux-%U
-ExecStop=/usr/bin/tmux -S /tmp/tmux-%U/YOLObotBeta kill-session -t YOLObotBeta
-Restart=always
-Type=forking
 # Test in git dir instead of prod
+ExecStart=%h/yolobot/Bot.sh YOLObotBeta
+Restart=always
+Type=simple
 WorkingDirectory=%h/yolobot
 
 [Install]
