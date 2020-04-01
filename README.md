@@ -11,10 +11,9 @@ How to dump tmux scrollback for debugging:
 tmux capture-pane -pt "$sessionname" -S - | less
 ```
 ## systemd notes
-How to dump tmux scrollback for debugging:
+How to dump scrollback for debugging:
 ```bash
-# $sessionname is YOLObot
-tmux -S "/tmp/tmux-$UID/$sessionname" capture-pane -pt "$sessionname" -S - | less
+journalctl --user -eu yolobot
 ```
 ## IRC notes
 How to speak through YOLObot:
