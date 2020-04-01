@@ -33,7 +33,7 @@ Copy and paste this block:
 ```bash
 # Do not run prod in a git repo you're working in
 mkdir ~/YOLObotProd
-for file in $(ls *.sh); do cp "$file" ~/YOLObotProd/; done
+cp -v *.sh ~/YOLObotProd/
 mkdir ~/.YOLObot
 ```
 Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
@@ -54,12 +54,12 @@ Enter `crontab -e` and add this to your crontab:
 Copy and paste this block:
 ```bash
 mkdir -p ~/.config/systemd/user
-for file in $(ls systemd); do cp "systemd/$file" ~/.config/systemd/user/; done
+cp -v systemd/* ~/.config/systemd/user/
 loginctl enable-linger "$USER"
 ```
 Replace $hostname with the host YOLObot will run on.
 ```bash
-for file in $(ls systemd/*.service); do sed -i s/^ConditionHost=.*/ConditionHost=$hostname/ ~/.config/systemd/user/"$(basename "$file")"; done
+sed -i s/^ConditionHost=.*/ConditionHost=$hostname/ ~/.config/systemd/user/"$(basename systemd/*.service)"
 systemctl --user enable yolobot.service yolobot.timer --now
 ```
 # Files
