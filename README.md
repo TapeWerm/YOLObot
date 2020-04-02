@@ -25,6 +25,7 @@ Only replies to messages from users in channels it's in. If it's only in keyed c
 Open Terminal:
 ```bash
 sudo apt install git tmux
+cd ~
 git clone https://github.com/TapeWerm/YOLObot.git
 cd YOLObot
 ```
