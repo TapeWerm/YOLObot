@@ -78,6 +78,7 @@ join_file=~/.YOLObot/${nick}Join.txt
 join=$(cut -d $'\n' -f 1 < "$join_file")
 server=$(cut -d $'\n' -f 2 -s < "$join_file")
 
+# DNS check
 # Trim off $server after first :
 if ! stdout=$(host "${server%%:*}"); then
 	>&2 echo "$stdout"
