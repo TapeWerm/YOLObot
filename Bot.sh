@@ -9,9 +9,35 @@ uid=$(id -u "$(whoami)")
 ram=/dev/shm/$uid
 ram_dir=$ram/YOLObot
 
+input() {
+	# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
+	send "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
+	send "NICK $nick"
+	send "$join"
+	# Last 10 lines of $buffer as IRC appends to it
+	tail -f "$buffer"
+}
+
+ping_timeout() {
+	diff=0
+	# 15 minute timeout
+	# irc.cat.pdx.edu ping timeout is 4m20s
+	while [ "$diff" -lt 900 ]; do
+		sleep 1
+		# Seconds since epoch
+		thyme=$(date +%s)
+		# File modification time in seconds since epoch
+		mthyme=$(stat -c %Y "$ping_time")
+		diff=$((thyme - mthyme))
+	done
+	# Kill script process
+	# exit does not exit script when forked
+	kill $$
+	exit
+}
+
 send() {
 	# Avoid filename expansion
-	echo "-> $*"
 	echo "$*" >> "$buffer"
 }
 
@@ -40,24 +66,6 @@ reject() {
 	output='Join a channel with me senpai! ^_^'
 	send "PRIVMSG $user :$output"
 	unset user
-}
-
-ping_timeout() {
-	diff=0
-	# 15 minute timeout
-	# irc.cat.pdx.edu ping timeout is 4m20s
-	while [ "$diff" -lt 900 ]; do
-		sleep 1
-		# Seconds since epoch
-		thyme=$(date +%s)
-		# File modification time in seconds since epoch
-		mthyme=$(stat -c %Y "$ping_time")
-		diff=$((thyme - mthyme))
-	done
-	# Kill script process
-	# exit does not exit script when forked
-	kill $$
-	exit
 }
 
 # If $1 doesn't exist
@@ -94,32 +102,27 @@ trap 'rm -r "$ram_dir"; rmdir --ignore-fail-on-non-empty "$ram"' EXIT
 
 ping_timeout &
 
-# Last 10 lines of $buffer as IRC appends to it
-tail -f "$buffer" | openssl s_client -connect "$server" | while true; do
-	if [ -z "$started" ]; then
-		# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
-		send "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
-		send "NICK $nick"
-		send "$join"
-		started=true
-	fi
-
-	read -r irc
+input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 	# If disconnected YOLObot reads an empty string
 	if [ -n "$irc" ]; then
 		# Reset timeout
 		touch "$ping_time"
-		echo "<- $irc"
+		echo "$irc"
 		if [ "$(echo "$irc" | cut -d ' ' -f 1)" = PING ]; then
 			send PONG
 		elif [ "$(echo "$irc" | cut -d ' ' -f 1)" = ERROR ]; then
 			if echo "$irc" | grep -q 'Closing Link'; then
+				kill $$
 				exit
 			fi
 		elif [ "$(echo "$irc" | cut -d ' ' -f 2)" = NOTICE ]; then
 			if echo "$irc" | grep -q 'Server Terminating'; then
+				kill $$
 				exit
 			fi
+		elif [[ "$(echo "$irc" | cut -d ' ' -f 1)" =~ connect:errno=[0-9]+ ]]; then
+			kill $$
+			exit
 		# If PRIVMSG and WHOIS isn't running
 		# $user is unset after WHOIS or Cmd.sh run
 		# If 2nd string divided by space is PRIVMSG and $user doesn't exist
