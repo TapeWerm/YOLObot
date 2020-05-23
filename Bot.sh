@@ -11,9 +11,9 @@ ram_dir=$ram/YOLObot
 
 input() {
 	# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
-	send "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
-	send "NICK $nick"
-	send "$join"
+	echo "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
+	echo "NICK $nick"
+	echo "$join"
 	# Last 10 lines of $buffer as IRC appends to it
 	tail -f "$buffer"
 }
