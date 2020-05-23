@@ -115,7 +115,7 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 				kill $$
 				exit
 			fi
-		elif [ "$(echo "$irc" | cut -d ' ' -f 2)" = NOTICE ]; then
+		elif [ "$(echo "$irc" | cut -d ' ' -f 2 -s)" = NOTICE ]; then
 			if echo "$irc" | grep -q 'Server Terminating'; then
 				kill $$
 				exit
@@ -126,7 +126,7 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 		# If PRIVMSG and WHOIS isn't running
 		# $user is unset after WHOIS or Cmd.sh run
 		# If 2nd string divided by space is PRIVMSG and $user doesn't exist
-		elif [ "$(echo "$irc" | cut -d ' ' -f 2)" = PRIVMSG ] && [ -z "$user" ]; then
+		elif [ "$(echo "$irc" | cut -d ' ' -f 2 -s)" = PRIVMSG ] && [ -z "$user" ]; then
 			# IRC says :$user!$username@$host PRIVMSG $chan :$msg
 			# 2nd character onwards from first string divided by !
 			user=$(echo "$irc" | cut -d ! -f 1 | cut -c 2-)
@@ -141,7 +141,7 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 			fi
 		# Check if user joined common channel after WHOIS
 		# After WHOIS IRC says :$host.cat.pdx.edu 319 $nick $user :$chans
-		elif [ "$(echo "$irc" | cut -d ' ' -f 2)" = 319 ]; then
+		elif [ "$(echo "$irc" | cut -d ' ' -f 2 -s)" = 319 ]; then
 			# Closing space to grep "# " instead of #
 			# #chan contains # but not "# "
 			# User mode might precede chan
@@ -160,7 +160,7 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 		# If user has no common channels after WHOIS
 		# After WHOIS IRC says :$host 312 $nick $user $host :$server_msg
 		# If 2nd string divided by space is 312 and $user isn't empty string
-		elif [ "$(echo "$irc" | cut -d ' ' -f 2)" = 312 ] && [ -n "$user" ]; then
+		elif [ "$(echo "$irc" | cut -d ' ' -f 2 -s)" = 312 ] && [ -n "$user" ]; then
 			reject
 		fi
 	fi
