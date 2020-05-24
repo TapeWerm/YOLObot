@@ -4,13 +4,10 @@
 # $0 is the path
 dir=$(dirname "$0")
 max_lines=5
-# $USER = `whoami` and is not set in cron
-uid=$(id -u "$(whoami)")
-ram=/dev/shm/$uid
-ram_dir=$ram/YOLObot
 
 input() {
 	# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
+	# $USER = `whoami` and is not set in cron
 	echo "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
 	echo "NICK $nick"
 	echo "$join"
@@ -81,6 +78,8 @@ buffer=~/.YOLObot/${nick}Buffer
 # Duplicate bots exit if $buffer is removed
 rm -f "$buffer"
 mkfifo "$buffer"
+ping_time=~/.YOLObot/${nick}Ping
+touch "$ping_time"
 
 join_file=~/.YOLObot/${nick}Join.txt
 join=$(cut -d $'\n' -f 1 < "$join_file")
@@ -93,12 +92,6 @@ if ! stdout=$(host "${server%%:*}"); then
 	exit 1
 fi
 fqdn=$(host "$HOSTNAME" | head -n 1 | cut -d ' ' -f 1)
-
-mkdir -p "$ram_dir"
-# Forked processes cannot share variables
-ping_time=$ram_dir/$nick
-touch "$ping_time"
-trap 'rm -r "$ram_dir"; rmdir --ignore-fail-on-non-empty "$ram"' EXIT
 
 ping_timeout &
 
