@@ -130,9 +130,9 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 			# IRC says :$user!$username@$host PRIVMSG $chan :$msg
 			# 2nd character onwards from first string divided by !
 			user=$(echo "$irc" | cut -d ! -f 1 | cut -c 2-)
-			chan=$(echo "$irc" | cut -d ' ' -f 3)
+			chan=$(echo "$irc" | cut -d ' ' -f 3 -s)
 			# Remove new line from 2nd character onwards from 4th string onwards divided by space
-			msg=$(echo "$irc" | cut -d ' ' -f 4- | tr -d '\r\n' | cut -c 2-)
+			msg=$(echo "$irc" | cut -d ' ' -f 4- -s | tr -d '\r\n' | cut -c 2-)
 			# $chan = $nick in PMs
 			if [ "$chan" = "$nick" ]; then
 				send "WHOIS $user"
@@ -147,10 +147,10 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 			# User mode might precede chan
 			# @#chan
 			# Remove + and @ from 3rd string divided by : and add space at the end
-			joined="$(echo "$irc" | cut -d : -f 3 | tr -d +@) "
+			joined="$(echo "$irc" | cut -d : -f 3 -s | tr -d +@) "
 			# grep $chan1 or $chan2 ...
 			# Replace , with ' |' from 2nd string divided by space and add space at the end
-			chans="$(echo "$join" | cut -d ' ' -f 2 | sed 's/,/ |/g') "
+			chans="$(echo "$join" | cut -d ' ' -f 2 -s | sed 's/,/ |/g') "
 
 			if echo "$joined" | grep -Eq "$chans"; then
 				reply "$user"
