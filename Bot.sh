@@ -109,10 +109,8 @@ ping_time=~/.YOLObot/${instance}Ping
 touch "$ping_time"
 
 join_file=~/.YOLObot/${instance}Join.txt
-# All but last line
-join=$(head -n -1 "$join_file")
-# Last line
-server=$(tail -n 1 "$join_file")
+join=$(grep -Ev '^[^ ]+:[0-9]+$' "$join_file")
+server=$(grep -E '^[^ ]+:[0-9]+$' "$join_file")
 if echo "$join" | grep -q '^NICK '; then
 	nick=$(echo "$join" | grep '^NICK ' | cut -d ' ' -f 2 -s)
 	join=$(echo "$join" | grep -v '^NICK ')

@@ -45,7 +45,7 @@ PRIVMSG #chan :$msg
 ...
 irc.domain.tld:$port
 ```
-If NICK line is missing it defaults to YOLObot. List channels with no key last. PRIVMSG lines are optional and can be used to identify to NickServ. `irc.domain.tld:$port` must be the last line.
+If NICK line is missing it defaults to YOLObot. List channels with no key last. PRIVMSG lines are optional and can be used before JOIN to identify with NickServ.
 
 Do not use both cron and systemd.
 ## cron setup
