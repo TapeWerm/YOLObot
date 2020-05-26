@@ -110,7 +110,10 @@ touch "$ping_time"
 
 join_file=~/.YOLObot/${instance}Join.txt
 join=$(grep -Ev '^[^ ]+:[0-9]+$' "$join_file")
-server=$(grep -E '^[^ ]+:[0-9]+$' "$join_file")
+if ! server=$(grep -E '^[^ ]+:[0-9]+$' "$join_file"); then
+	echo "No server in $join_file"
+	exit 1
+fi
 if echo "$join" | grep -q '^NICK '; then
 	nick=$(echo "$join" | grep '^NICK ' | cut -d ' ' -f 2 -s)
 	join=$(echo "$join" | grep -v '^NICK ')
