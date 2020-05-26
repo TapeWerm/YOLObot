@@ -39,10 +39,13 @@ mkdir ~/.YOLObot
 ```
 Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
 ```
+NICK $nick
 JOIN #chan,#chan $key,$key
+PRIVMSG #chan :$msg
+...
 irc.domain.tld:$port
 ```
-List channels with no password last.
+If NICK line is missing it defaults to YOLObot. List channels with no key last. PRIVMSG lines are optional and can be used to identify to NickServ. `irc.domain.tld:$port` must be the last line.
 
 Do not use both cron and systemd.
 ## cron setup

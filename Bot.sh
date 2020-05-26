@@ -4,6 +4,7 @@
 # $0 is the path
 dir=$(dirname "$0")
 max_lines=5
+syntax='Usage: Bot.sh [OPTION] ...'
 
 input() {
 	# $USER, $HOSTNAME, and $fqdn are verified, name is clearly not
@@ -65,25 +66,59 @@ reject() {
 	unset user
 }
 
-# If $1 doesn't exist
-if [ -z "$1" ]; then
-	nick=YOLObot
-else
-	nick=$1
+args=$(getopt -l help,instance: -o hi: -- "$@")
+eval set -- "$args"
+while [ "$1"  != -- ]; do
+	case $1 in
+	--help|-h)
+		echo "$syntax"
+		echo IRC bot framework example, says YOLO and not much else, but PMs only to people in a same channel as it.
+		echo
+		echo Mandatory arguments to long options are mandatory for short options too.
+		echo '-i, --instance=INSTANCE  use configuration file ~/.YOLObot/{INSTANCE}Join.txt. defaults to YOLObot.'
+		echo
+		echo 'See README.md for format of ~/.YOLObot/{INSTANCE}Join.txt'
+		exit
+		;;
+	--instance|-i)
+		instance=$2
+		shift 2
+		;;
+	esac
+done
+shift
+
+if [ "$#" -gt 0 ]; then
+	>&2 echo Too much arguments
+	>&2 echo "$syntax"
+	exit 1
+fi
+
+# If $instance doesn't exist
+if [ -z "$instance" ]; then
+	instance=YOLObot
 fi
 # Make directory and parents quietly
 mkdir -p ~/.YOLObot
-buffer=~/.YOLObot/${nick}Buffer
+buffer=~/.YOLObot/${instance}Buffer
 # Kill all doppelgangers
 # Duplicate bots exit if $buffer is removed
 rm -f "$buffer"
 mkfifo "$buffer"
-ping_time=~/.YOLObot/${nick}Ping
+ping_time=~/.YOLObot/${instance}Ping
 touch "$ping_time"
 
-join_file=~/.YOLObot/${nick}Join.txt
-join=$(cut -d $'\n' -f 1 < "$join_file")
-server=$(cut -d $'\n' -f 2 -s < "$join_file")
+join_file=~/.YOLObot/${instance}Join.txt
+# All but last line
+join=$(head -n -1 "$join_file")
+# Last line
+server=$(tail -n 1 "$join_file")
+if echo "$join" | grep -q '^NICK '; then
+	nick=$(echo "$join" | grep '^NICK ' | cut -d ' ' -f 2 -s)
+	join=$(echo "$join" | grep -v '^NICK ')
+else
+	nick=$instance
+fi
 
 # DNS check
 # Trim off $server after first :

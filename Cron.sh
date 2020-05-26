@@ -10,5 +10,5 @@ fi
 
 if ! tmux ls 2>&1 | grep -q "^$name:"; then
 	# Makes session $name in background
-	tmux new -ds "$name" "$dir/Bot.sh" "$name"
+	tmux new -ds "$name" "$dir/Bot.sh" -i "$name"
 fi

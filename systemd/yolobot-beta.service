@@ -5,7 +5,7 @@ ConditionHost=hostname.domain.tld
 
 [Service]
 # Test in git dir instead of prod
-ExecStart=%h/yolobot/Bot.sh YOLObotBeta
+ExecStart=%h/yolobot/Bot.sh -i YOLObotBeta
 Restart=always
 Type=simple
 WorkingDirectory=%h/yolobot
