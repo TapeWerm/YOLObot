@@ -7,13 +7,13 @@ Forked from a basic IRC bot framework taught to new IT support, it grew to power
 # [Contributing](CONTRIBUTING.md)
 # Table of contents
 - Notes
-  - [cron notes](README.md#cron-notes)
-  - [systemd notes](README.md#systemd-notes)
-  - [IRC notes](README.md#irc-notes)
-- [Setup](README.md#setup)
-  - [cron setup](README.md#cron-setup)
-  - [systemd setup](README.md#systemd-setup)
-- [Files](README.md#files)
+  - [cron notes](#cron-notes)
+  - [systemd notes](#systemd-notes)
+  - [IRC notes](#irc-notes)
+- [Setup](#setup)
+  - [cron setup](#cron-setup)
+  - [systemd setup](#systemd-setup)
+- [Files](#files)
 ## cron notes
 How to dump tmux scrollback for debugging:
 ```bash
