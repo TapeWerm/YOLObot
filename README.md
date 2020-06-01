@@ -13,7 +13,7 @@ Forked from a basic IRC bot framework taught to new IT support, it grew to power
 - [Setup](#setup)
   - [cron setup](#cron-setup)
   - [systemd setup](#systemd-setup)
-- [Files](#files)
+- [Files](#botsh)
 ## cron notes
 How to dump tmux scrollback for debugging:
 ```bash
