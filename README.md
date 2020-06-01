@@ -6,25 +6,26 @@ The YOLO IRC bot framework PMs only to people in a same channel as it, features 
 Forked from a basic IRC bot framework taught to new IT support, it grew to power an internal bot in production after much learning by trial and error. Permission was granted to upload the framework under MIT, and after years gathering dust, I had to add timeouts to fix a holdout from the Rocket.Chat migration based on the framework. And if my last grievance is fixed, I may as well strip it back down to its memebot roots and finally open-source its cool channel checking feature. Can't have engineering students using our work bots through private messages. Yay tech debt.
 # [Contributing](CONTRIBUTING.md)
 # Table of contents
-- [cron notes](README.md#cron-notes)
-- [systemd notes](README.md#systemd-notes)
-- [IRC notes](README.md#irc-notes)
+- Notes
+  - [cron notes](README.md#cron-notes)
+  - [systemd notes](README.md#systemd-notes)
+  - [IRC notes](README.md#irc-notes)
 - [Setup](README.md#setup)
   - [cron setup](README.md#cron-setup)
   - [systemd setup](README.md#systemd-setup)
 - [Files](README.md#files)
-# cron notes
+## cron notes
 How to dump tmux scrollback for debugging:
 ```bash
 # $sessionname is YOLObot
 tmux capture-pane -pt "$sessionname" -S - | less
 ```
-# systemd notes
+## systemd notes
 How to dump scrollback for debugging:
 ```bash
 journalctl --user -eu yolobot
 ```
-# IRC notes
+## IRC notes
 How to speak through YOLObot:
 ```bash
 echo "PRIVMSG #chan :Test" >> ~/.YOLObot/YOLObotBuffer
