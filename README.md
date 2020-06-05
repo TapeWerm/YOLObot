@@ -43,7 +43,7 @@ Copy and paste this block:
 ```bash
 # Do not run prod in a git repo you're working in
 mkdir ~/YOLObotProd
-cp -v *.sh ~/YOLObotProd/
+cp *.sh ~/YOLObotProd/
 mkdir ~/.YOLObot
 ```
 Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
@@ -67,7 +67,7 @@ Enter `crontab -e` and add this to your crontab:
 Copy and paste this block:
 ```bash
 mkdir -p ~/.config/systemd/user
-cp -v systemd/* ~/.config/systemd/user/
+cp systemd/* ~/.config/systemd/user/
 loginctl enable-linger "$USER"
 ```
 Replace $hostname with the host YOLObot will run on.
