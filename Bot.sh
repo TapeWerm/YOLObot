@@ -28,10 +28,11 @@ ping_timeout() {
 		mthyme=$(stat -c %Y "$ping_time")
 		diff=$((thyme - mthyme))
 	done
+	>&2 echo Ping timeout
 	# Kill script process
 	# exit does not exit script when forked
 	kill $$
-	exit
+	exit 1
 }
 
 send() {
@@ -139,19 +140,9 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 		echo "$irc"
 		if [ "$(echo "$irc" | cut -d ' ' -f 1)" = PING ]; then
 			send PONG
-		elif [ "$(echo "$irc" | cut -d ' ' -f 1)" = ERROR ]; then
-			if echo "$irc" | grep -q 'Closing Link'; then
-				kill $$
-				exit
-			fi
-		elif [ "$(echo "$irc" | cut -d ' ' -f 2 -s)" = NOTICE ]; then
-			if echo "$irc" | grep -q 'Server Terminating'; then
-				kill $$
-				exit
-			fi
 		elif [[ "$(echo "$irc" | cut -d ' ' -f 1)" =~ connect:errno=[0-9]+ ]]; then
 			kill $$
-			exit
+			exit 1
 		# If PRIVMSG and WHOIS isn't running
 		# $user is unset after WHOIS or Cmd.sh run
 		# If 2nd string divided by space is PRIVMSG and $user doesn't exist
