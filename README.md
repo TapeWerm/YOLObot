@@ -46,7 +46,7 @@ mkdir ~/YOLObotProd
 cp *.sh ~/YOLObotProd/
 mkdir ~/.YOLObot
 ```
-Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = Ctrl-G):
+Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = <kbd>Ctrl</kbd>-<kbd>G</kbd>):
 ```
 NICK $nick
 JOIN #chan,#chan $key,$key
