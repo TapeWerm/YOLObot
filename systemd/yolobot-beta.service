@@ -2,6 +2,7 @@
 Description=YOLObotBeta
 # systemd user services will start on any host by default, making duplicate bots
 ConditionHost=hostname.domain.tld
+StartLimitIntervalSec=0
 
 [Service]
 # Test in git dir instead of prod

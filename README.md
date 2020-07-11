@@ -73,7 +73,7 @@ loginctl enable-linger "$USER"
 Replace $hostname with the host YOLObot will run on.
 ```bash
 for file in systemd/*.service; do sed -i s/^ConditionHost=.*/ConditionHost=$hostname/ ~/.config/systemd/user/"$(basename "$file")"; done
-systemctl --user enable yolobot.service yolobot.timer --now
+systemctl --user enable yolobot.service --now
 ```
 # Files
 ## Bot.sh
