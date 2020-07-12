@@ -45,6 +45,8 @@ Copy and paste this block:
 mkdir ~/YOLObotProd
 cp *.sh ~/YOLObotProd/
 mkdir ~/.YOLObot
+touch ~/.YOLObot/YOLObotJoin.txt
+chmod 600 ~/.YOLObot/YOLObotJoin.txt
 ```
 Enter `nano ~/.YOLObot/YOLObotJoin.txt`, fill this in, and write out (^G = <kbd>Ctrl</kbd>-<kbd>G</kbd>):
 ```
