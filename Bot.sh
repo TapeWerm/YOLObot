@@ -11,7 +11,7 @@ input() {
 	# $USER = `whoami` and is not set in cron
 	echo "USER $(whoami) $HOSTNAME $fqdn :The Mafia"
 	echo "NICK $nick"
-	echo "$join"
+	grep -Ev '^NICK |^[^ ]+:[0-9]+$' "$join_file"
 	# Last 10 lines of $buffer as IRC appends to it
 	tail -f "$buffer"
 }
@@ -112,14 +112,12 @@ touch "$ping_time"
 
 join_file=~/.YOLObot/${instance}Join.txt
 chmod 600 "$join_file"
-join=$(grep -Ev '^[^ ]+:[0-9]+$' "$join_file")
 if ! server=$(grep -E '^[^ ]+:[0-9]+$' "$join_file"); then
 	echo "No server in $join_file"
 	exit 1
 fi
-if echo "$join" | grep -q '^NICK '; then
-	nick=$(echo "$join" | grep '^NICK ' | cut -d ' ' -f 2 -s)
-	join=$(echo "$join" | grep -v '^NICK ')
+if grep -q '^NICK ' "$join_file"; then
+	nick=$(grep '^NICK ' "$join_file" | cut -d ' ' -f 2 -s)
 else
 	nick=$instance
 fi
@@ -172,7 +170,7 @@ input | openssl s_client -connect "$server" 2>&1 | while read -r irc; do
 			joined="$(echo "$irc" | cut -d : -f 3 -s | tr -d +@) "
 			# grep $chan1 or $chan2 ...
 			# Replace , with ' |' from 2nd string divided by space and add space at the end
-			chans="$(echo "$join" | cut -d ' ' -f 2 -s | sed 's/,/ |/g') "
+			chans="$(grep '^JOIN ' "$join_file" | cut -d ' ' -f 2 -s | sed 's/,/ |/g') "
 
 			if echo "$joined" | grep -Eq "$chans"; then
 				reply "$user"
