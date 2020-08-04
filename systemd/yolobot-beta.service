@@ -8,6 +8,7 @@ StartLimitIntervalSec=0
 # Test in git dir instead of prod
 ExecStart=%h/yolobot/Bot.sh -i YOLObotBeta
 Restart=always
+RestartSec=5
 Type=simple
 WorkingDirectory=%h/yolobot
 
